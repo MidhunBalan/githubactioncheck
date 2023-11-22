@@ -1,0 +1,33 @@
+name: Workflow1
+
+"on":
+  pull_request:
+    branches:
+      - main
+
+jobs:
+    CI: 
+     runs-on: ubuntu-latest
+     outputs:
+      Deploy-Reviews: ${{ steps.filter.outputs.reviews }}
+      Deploy-Reports: ${{ steps.filter.outputs.reports }}
+     strategy:
+      matrix:
+        node-version: [16.x]
+     steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm ci
+
+      - name: Build
+        run: |
+          npm run build
