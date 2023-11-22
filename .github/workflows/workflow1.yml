@@ -9,7 +9,7 @@ jobs:
     CI: 
      runs-on: ubuntu-latest
      outputs:
-      changed-packages: ${{ steps.filter.outputs.changes }}
+      packages: ${{ steps.filter.outputs.changes }}
      strategy:
       matrix:
         node-version: [16.x]
@@ -41,9 +41,8 @@ jobs:
     Call-workflow:
         needs: CI
         strategy:
-            matrix:
-                node-version: [16.x]
-                package: ${{ fromJSON(needs.changes.outputs.changed-packages) }}
+         matrix:
+            package: ${{ fromJSON(needs.changes.outputs.packages) }}
 
         uses: ./.github/workflows/reusable.yml
         with:
