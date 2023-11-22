@@ -16,18 +16,32 @@ jobs:
         node-version: [16.x]
      steps:
 
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
         with:
-          persist-credentials: false
+          filters: |
+           reviews:
+            - 'packages/reviews/*'
+           reports:
+            - 'packages/reports/*'
 
-      - name: install node
-        uses: actions/setup-node@v1
+      - name: Deploy Reviews
+        if: steps.filter.outputs.reviews == 'true'
+        run: echo "reviews=true" >> "$GITHUB_OUTPUT"
+      
+      - name: Deploy Reports
+        if: steps.filter.outputs.reports == 'true'
+        run: echo "reports=true" >> "$GITHUB_OUTPUT"
+
+    Deploy-Reviews:
+        needs: CI
+        name: deploy
+        if: ${{ needs.CI.outputs.reviews == 'true' }}
+        uses: ./.github/workflows/reusable.yml
         with:
-          node-version: ${{ matrix.node-version }}
+            mode: "development"
+            package: "reviews"
 
-      - run: npm ci
-
-      - name: Build
-        run: |
-          npm run build
+        secrets:
+            TEST_VALUE: "1234"
+            
