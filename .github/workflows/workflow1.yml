@@ -42,7 +42,6 @@ jobs:
         needs: CI
         strategy:
          matrix:
-           node-version: [16.x]
            package: ${{ fromJSON(needs.changes.outputs.changed-packages) }}
 
         uses: ./.github/workflows/reusable.yml
