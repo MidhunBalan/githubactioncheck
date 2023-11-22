@@ -42,7 +42,7 @@ jobs:
         needs: CI
         strategy:
          matrix:
-            package: ${{ fromJSON(needs.changes.outputs.packages) }}
+            package: ${{ fromJSON(needs.CI.outputs.packages) }}
 
         uses: ./.github/workflows/reusable.yml
         with:
