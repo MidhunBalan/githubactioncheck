@@ -47,6 +47,7 @@ jobs:
         run: echo "reports=true" >> "$GITHUB_OUTPUT"
 
     Call-workflow:
+        needs: CI
         strategy:
             matrix:
                 node-version: [16.x]
