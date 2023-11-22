@@ -14,12 +14,13 @@ jobs:
      strategy:
       matrix:
         node-version: [16.x]
+     permissions:
+      pull-requests: read
 
      steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
+        
     
       - name: install node
         uses: actions/setup-node@v1
