@@ -9,8 +9,7 @@ jobs:
     CI: 
      runs-on: ubuntu-latest
      outputs:
-      Deploy-Reviews: ${{ steps.filter.outputs.reviews }}
-      Deploy-Reports: ${{ steps.filter.outputs.reports }}
+      changed-packages: ${{ steps.filter.outputs.changes }}
      strategy:
       matrix:
         node-version: [16.x]
@@ -39,24 +38,17 @@ jobs:
            reports:
             - 'packages/reports/*'
 
-      - name: Deploy Reviews
-        if: steps.filter.outputs.reviews == 'true'
-        run: echo "reviews=true" >> "$GITHUB_OUTPUT"
-      
-      - name: Deploy Reports
-        if: steps.filter.outputs.reports == 'true'
-        run: echo "reports=true" >> "$GITHUB_OUTPUT"
-
     Call-workflow:
         needs: CI
         strategy:
-            matrix:
-                node-version: [16.x]
-                packages: [reviews, reports]
+         matrix:
+           node-version: [16.x]
+           package: ${{ fromJSON(needs.changes.outputs.changed-packages) }}
+
         uses: ./.github/workflows/reusable.yml
         with:
             mode: "development"
-            package: "reviews"
+            package: ${{ matrix.packages }}
         secrets:
             TEST_VALUE: "1234"
             
