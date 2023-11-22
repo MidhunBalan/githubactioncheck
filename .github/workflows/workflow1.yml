@@ -49,6 +49,7 @@ jobs:
         strategy:
             matrix:
                 node-version: [16.x]
+                packages: [reviews, reports]
         uses: ./.github/workflows/reusable.yml
         with:
             mode: "development"
