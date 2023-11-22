@@ -41,8 +41,9 @@ jobs:
     Call-workflow:
         needs: CI
         strategy:
-         matrix:
-           package: ${{ fromJSON(needs.changes.outputs.changed-packages) }}
+            matrix:
+                node-version: [16.x]
+                package: ${{ fromJSON(needs.changes.outputs.changed-packages) }}
 
         uses: ./.github/workflows/reusable.yml
         with:
