@@ -16,7 +16,6 @@ jobs:
         node-version: [16.x]
 
      steps:
-
       - uses: dorny/paths-filter@v2
         id: filter
         with:
