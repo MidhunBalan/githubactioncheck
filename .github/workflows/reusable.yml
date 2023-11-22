@@ -24,7 +24,7 @@ jobs:
             echo "TEST_VALUE: ${{ secrets.TEST_VALUE }}"
             echo "mode: ${{ inputs.mode }}"
             echo "package: ${{ inputs.package }}"
-            echo "path: packages/${{ matrix.node-version }}"
+            echo "path: packages/${{ inputs.package }}"
 
   
       
