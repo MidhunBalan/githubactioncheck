@@ -9,7 +9,7 @@ jobs:
     CI: 
      runs-on: ubuntu-latest
      outputs:
-      Deploy-Appengine: ${{ steps.filter.outputs.onboarding }}
+      Deploy-Appengine: ${{ steps.filter.outputs.onboarding}}
       packages: ${{ steps.filter.outputs.changes }}
      strategy:
       matrix:
@@ -43,7 +43,7 @@ jobs:
 
     Appegine-workflow:
         needs: CI
-        if: ${{ needs.CI.outputs.Deploy-Appengine == 'true' }}
+        if: ${{ needs.CI.outputs.Deploy-Appengine == 'false' }}
         uses: ./.github/workflows/reusable-gae.yml
         with:
             mode: "development"
