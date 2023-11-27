@@ -1,0 +1,68 @@
+name: Workflow1
+
+"on":
+  pull_request:
+    branches:
+      - main
+
+jobs:
+    CI: 
+     runs-on: ubuntu-latest
+     outputs:
+      Deploy-Appengine: ${{ steps.filter.outputs.onboarding}}
+      packages: ${{ steps.filter.outputs.changes }}
+     strategy:
+      matrix:
+        node-version: [16.x]
+     permissions:
+      pull-requests: read
+
+     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+    
+      - name: install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm ci
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+           reviews:
+            - 'packages/reviews/*'
+           reports:
+            - 'packages/reports/*'
+           onboarding:
+             - 'packages/onboarding/*'
+      - name : Display output paths
+        run: |
+          echo "changes: ${{ steps.filter.outputs.changes }}"
+    Appegine-workflow:
+        needs: CI
+        if: ${{ needs.CI.outputs.Deploy-Appengine == 'true' }}
+        uses: ./.github/workflows/reusable-gae.yml
+        with:
+            mode: "development"
+            package: ${{ matrix.package }}
+        secrets:
+            TEST_VALUE: "1234"
+
+    Call-workflow:
+        needs: CI
+        strategy:
+         matrix:
+            package: ${{ fromJSON(needs.CI.outputs.packages) }}
+
+        uses: ./.github/workflows/reusable.yml
+        with:
+            mode: "development"
+            package: ${{ matrix.package }}
+        secrets:
+            TEST_VALUE: "1234"
+            

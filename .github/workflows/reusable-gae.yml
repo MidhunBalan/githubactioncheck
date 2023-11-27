@@ -1,0 +1,30 @@
+name: Calling reusable workflow
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        type: string
+      package: 
+        type: string
+    secrets:
+      TEST_VALUE:
+        required: true
+   
+jobs:
+  storage_deploy:
+    runs-on: ubuntu-latest
+    name: ${{ inputs.mode }}
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Print All the values
+        run: | 
+            echo "TEST_VALUE: ${{ secrets.TEST_VALUE }}"
+            echo "mode: ${{ inputs.mode }}"
+            echo "package: ${{ inputs.package }}"
+            echo "path: packages/${{ inputs.package }}"
+
+  
+      
