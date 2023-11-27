@@ -40,7 +40,7 @@ jobs:
             - 'packages/reports/*'
            onboarding:
              - 'packages/onboarding/*'
-      - name : Display output paths
+      - name : Display output all paths
         run: |
           echo "changes: ${{ steps.filter.outputs.changes }}"
     Appegine-workflow:
