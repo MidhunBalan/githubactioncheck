@@ -40,7 +40,9 @@ jobs:
             - 'packages/reports/*'
            onboarding:
              - 'packages/onboarding/*'
-
+      - name : Display output paths
+        run: |
+          echo "changes: ${{ steps.filter.outputs.changes }}"
     Appegine-workflow:
         needs: CI
         if: ${{ needs.CI.outputs.Deploy-Appengine == 'true' }}
