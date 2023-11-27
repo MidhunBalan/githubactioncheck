@@ -55,6 +55,7 @@ jobs:
 
     Call-workflow:
         needs: CI
+        if: ${{ needs.CI.outputs.packages != '[]' }}
         strategy:
          matrix:
             package: ${{ fromJSON(needs.CI.outputs.packages) }}
