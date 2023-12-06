@@ -15,6 +15,7 @@ jobs:
   storage_deploy:
     runs-on: ubuntu-latest
     name: ${{ inputs.mode }}
+    if: contains(inputs.package, 'general') || contains(inputs.package, 'reviews') || contains(inputs.package, 'bookingPage') || contains(inputs.package, 'activity') || contains(inputs.package, 'reports')
     strategy:
       matrix:
         node-version: [16.x]
