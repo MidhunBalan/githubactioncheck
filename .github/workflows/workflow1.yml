@@ -43,9 +43,10 @@ jobs:
       - name : Display output all paths
         run: |
           echo "changes: ${{ steps.filter.outputs.changes }}"
-          
+
     Appegine-workflow:
         needs: CI
+        name: deploy
         if: ${{ needs.CI.outputs.Deploy-Appengine == 'true' }}
         uses: ./.github/workflows/reusable-gae.yml
         with:
@@ -54,8 +55,10 @@ jobs:
         secrets:
             TEST_VALUE: "1234"
 
+            
     Call-workflow:
         needs: CI
+        name: deploy
         if: ${{ needs.CI.outputs.packages != '[]' }}
         strategy:
          matrix:
