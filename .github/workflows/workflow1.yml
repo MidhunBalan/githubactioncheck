@@ -46,6 +46,7 @@ jobs:
 
     Appegine-workflow:
         needs: CI
+        name: deploy
         if: ${{ needs.CI.outputs.Deploy-Appengine == 'true' }}
         uses: ./.github/workflows/reusable-gae.yml
         with:
@@ -57,6 +58,7 @@ jobs:
             
     Call-workflow:
         needs: CI
+        name: deploy
         if: ${{ needs.CI.outputs.packages != '[]' }}
         strategy:
          matrix:
